@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func TestWait(t *testing.T) {
+func TestSelect(t *testing.T) {
 	altChan := time.After(time.Millisecond * 20)
 
 	cc := condchan.New(&sync.Mutex{})

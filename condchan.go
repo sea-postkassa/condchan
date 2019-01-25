@@ -35,51 +35,51 @@ func New(l sync.Locker) *CondChan {
 	}
 }
 
-// Select atomically unlocks this.L and executes fn.
-// After later resuming execution, Wait locks this.L before returning.
+// Select atomically unlocks cc.L and executes fn.
+// After later resuming execution, Wait locks cc.L before returning.
 //
 // fn is executed passing channel in to it. Passed channel will signal by
 // emitting struct{} or by closing. Inside fn should be nothing more but
 // select statement using bypassed channel together with other channels
 // that signal execution continuation.
-func (this *CondChan) Select(fn selectFn) {
-	this.checker.check()
+func (cc *CondChan) Select(fn selectFn) {
+	cc.checker.check()
 
-	this.chL.RLock()
-	ch := this.ch
-	this.chL.RUnlock()
+	cc.chL.RLock()
+	ch := cc.ch
+	cc.chL.RUnlock()
 
-	this.L.Unlock()
+	cc.L.Unlock()
 	fn(ch)
-	this.L.Lock()
+	cc.L.Lock()
 }
 
-// Wait atomically unlocks this.L and suspends execution
+// Wait atomically unlocks cc.L and suspends execution
 // of the calling goroutine. After later resuming execution,
-// Wait locks this.L before returning. Unlike in other systems,
+// Wait locks cc.L before returning. Unlike in other systems,
 // Wait cannot return unless awoken by Broadcast or Signal.
-func (this *CondChan) Wait() {
-	this.checker.check()
+func (cc *CondChan) Wait() {
+	cc.checker.check()
 
-	this.chL.RLock()
-	ch := this.ch
-	this.chL.RUnlock()
+	cc.chL.RLock()
+	ch := cc.ch
+	cc.chL.RUnlock()
 
-	this.L.Unlock()
+	cc.L.Unlock()
 	<-ch
-	this.L.Lock()
+	cc.L.Lock()
 }
 
-// Signal wakes one goroutine waiting on "this", if there is any.
+// Signal wakes one goroutine waiting on cc, if there is any.
 //
-// It is allowed but not required for the caller to hold this.L
+// It is allowed but not required for the caller to hold cc.L
 // during the call.
-func (this *CondChan) Signal() {
-	this.checker.check()
+func (cc *CondChan) Signal() {
+	cc.checker.check()
 
-	this.chL.RLock()
-	ch := this.ch
-	this.chL.RUnlock()
+	cc.chL.RLock()
+	ch := cc.ch
+	cc.chL.RUnlock()
 
 	select {
 	case ch <- struct{}{}:
@@ -87,17 +87,17 @@ func (this *CondChan) Signal() {
 	}
 }
 
-// Broadcast wakes all goroutines waiting on "this".
+// Broadcast wakes all goroutines waiting on cc.
 //
-// It is allowed but not required for the caller to hold this.L
+// It is allowed but not required for the caller to hold cc.L
 // during the call.
-func (this *CondChan) Broadcast() {
-	this.checker.check()
+func (cc *CondChan) Broadcast() {
+	cc.checker.check()
 
-	this.chL.Lock()
-	close(this.ch)
-	this.ch = make(chan struct{})
-	this.chL.Unlock()
+	cc.chL.Lock()
+	close(cc.ch)
+	cc.ch = make(chan struct{})
+	cc.chL.Unlock()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

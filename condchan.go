@@ -7,12 +7,11 @@ import (
 )
 
 type CondChan struct {
-	noCopy noCopy
-
 	L   sync.Locker
 	ch  chan struct{}
 	chL sync.RWMutex
 
+	noCopy  noCopy
 	checker copyChecker
 }
 
@@ -28,41 +27,39 @@ func New(l sync.Locker) *CondChan {
 
 func (this *CondChan) Select(fn selectFn) {
 	this.checker.check()
-	this.L.Unlock()
 
 	this.chL.RLock()
 	ch := this.ch
 	this.chL.RUnlock()
 
+	this.L.Unlock()
 	fn(ch)
-
 	this.L.Lock()
 }
 
 func (this *CondChan) Wait() {
-	//log.Print("WI")
 	this.checker.check()
-	this.L.Unlock()
 
 	this.chL.RLock()
 	ch := this.ch
 	this.chL.RUnlock()
+
+	this.L.Unlock()
 	<-ch
-
 	this.L.Lock()
-	//log.Print("WO")
-
 }
 
 func (this *CondChan) Signal() {
 	this.checker.check()
 
-	this.chL.Lock()
+	this.chL.RLock()
+	ch := this.ch
+	this.chL.RUnlock()
+
 	select {
-	case this.ch <- struct{}{}:
+	case ch <- struct{}{}:
 	default:
 	}
-	this.chL.Unlock()
 }
 
 func (this *CondChan) Broadcast() {
@@ -72,16 +69,6 @@ func (this *CondChan) Broadcast() {
 	close(this.ch)
 	this.ch = make(chan struct{})
 	this.chL.Unlock()
-
-	//this.chL.Lock()
-	//for more := true; more; {
-	//	select {
-	//	case this.ch <- struct{}{}:
-	//	default:
-	//		more = false
-	//	}
-	//}
-	//this.chL.Unlock()
 }
 
 // Code borrowed from sync.cond ////////////////////////////////////////////////////////////////////////////////////////

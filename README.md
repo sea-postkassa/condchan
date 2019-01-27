@@ -40,7 +40,7 @@ func timeoutExample()  {
 		select {
 		case <-c:   // Never ending wait
 		case <-timeoutChan:
-			fmt.Println("Hooray! Just escaped from eternal wait.")
+			fmt.Println("Hooray! Just escaped from the eternal wait.")
 		}
 	})
 	cc.L.Unlock()
@@ -49,7 +49,7 @@ func timeoutExample()  {
 
 Output:
 ```text
-Hooray! Just escaped from eternal wait.
+Hooray! Just escaped from the eternal wait.
 ```
 
 ### Broadcast example

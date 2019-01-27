@@ -10,13 +10,12 @@ import (
 )
 
 func TestSelect(t *testing.T) {
-	altChan := time.After(time.Millisecond * 20)
-
 	cc := condchan.New(&sync.Mutex{})
 	go func() {
 		time.Sleep(time.Millisecond * 10)
 		cc.L.Lock()
-		cc.Broadcast()
+		cc.Signal()
+		cc.Signal()
 		cc.L.Unlock()
 	}()
 
@@ -28,10 +27,11 @@ func TestSelect(t *testing.T) {
 		close(waitFinishChan)
 	}()
 
+	cancelChan := time.After(time.Millisecond * 20)
 	cc.L.Lock()
 	cc.Select(func(c <-chan struct{}) { // Waiting with select
 		select {
-		case <-altChan:
+		case <-cancelChan:
 			t.Fail()
 		case <-c:
 		}
@@ -39,6 +39,57 @@ func TestSelect(t *testing.T) {
 	cc.L.Unlock()
 
 	<-waitFinishChan
+}
+
+func TestWaitCancel(t *testing.T) {
+	cc := condchan.New(&sync.Mutex{})
+
+	cancelChan := time.After(time.Millisecond * 10)
+	cc.L.Lock()
+	cc.Select(func(c <-chan struct{}) { // Waiting with select
+		select {
+		case <-cancelChan:
+		case <-c:
+			t.Fail()
+		}
+	})
+	cc.L.Unlock()
+}
+
+func TestSelectBroadcast(t *testing.T) {
+	cc := condchan.New(&sync.Mutex{})
+
+	cancelChan := time.After(time.Millisecond * 100)
+	startChan := make(chan struct{})
+	finishChan := make(chan struct{})
+	const waiterCnt = 100
+	for i := 0; i < waiterCnt; i++ {
+		go func() {
+			cc.L.Lock()
+			startChan <- struct{}{}
+			cc.Select(func(c <-chan struct{}) { // Waiting with select
+				select {
+				case <-cancelChan:
+					t.Fail()
+				case <-c:
+				}
+			})
+			cc.L.Unlock()
+			finishChan <- struct{}{}
+		}()
+	}
+
+	for i := 0; i < waiterCnt; i++ {
+		<-startChan
+	}
+
+	cc.L.Lock()
+	cc.Broadcast()
+	cc.L.Unlock()
+
+	for i := 0; i < waiterCnt; i++ {
+		<-finishChan
+	}
 }
 
 func TestCondSignal(t *testing.T) {

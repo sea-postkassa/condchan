@@ -63,6 +63,10 @@ func waiter(cc *condchan.CondChan, name string, wait time.Duration, jobResult *s
 }
 
 func main() {
-	//timeoutExample()
+	fmt.Println("Timeout example")
+	timeoutExample()
+
+	fmt.Println()
+	fmt.Println("Broadcast example")
 	broadcastExample()
 }

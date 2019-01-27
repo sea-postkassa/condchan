@@ -26,7 +26,7 @@ Make sure [Git is installed](https://git-scm.com/downloads) on your machine and 
 In this example CondChan is created and endlessly waiting on it.
 *Select* method is used for the waiting.
 Method accepts *func* argument.
-Signaling channel is provided inside *func* that should be used in select statement together with other channels that can interrupt waiting.   
+Signaling channel is provided inside *func* that should be used in select statement together with the other channels that can interrupt waiting.   
 
 ```go
 func timeoutExample()  {
@@ -38,7 +38,7 @@ func timeoutExample()  {
 	// Signal or Broadcast is called on CondChan
 	cc.Select(func(c <-chan struct{}) { // Waiting with select
 		select {
-		case <-c: // Never ending wait
+		case <-c:   // Never ending wait
 		case <-timeoutChan:
 			fmt.Println("Hooray! Just escaped from eternal wait.")
 		}
@@ -47,7 +47,17 @@ func timeoutExample()  {
 }
 ```
 
+Output:
+```text
+Hooray! Just escaped from eternal wait.
+```
+
 ### Broadcast example
+
+This example is using *Wait* and *Select* methods for simultaneous wait on same CondChan.
+Waiter "Patience" is waiting 3s and waiter "Impatience" is waiting 1s while job is done in 2s.
+Waiter "Impatience" will be cancelled with *timeoutChan*.
+Waiter "Patience" will receive signal on channel *c*.
 
 ```go
 func broadcastExample()  {
@@ -59,14 +69,14 @@ func broadcastExample()  {
 		cc.L.Lock()
 		jobResult = "CANDY"
 		cc.L.Unlock()
-		cc.Broadcast()	// Letting know waiter that job is done
+		cc.Broadcast()  // Letting know all waiters that job is done
 	}()
 
 	go waiter(cc, "Patience", time.Second*3, &jobResult)
 	go waiter(cc, "Impatience", time.Second*1, &jobResult)
 
 	cc.L.Lock()
-	cc.Wait()	// Waiting like on sync.Cond
+	cc.Wait()   // Waiting like on sync.Cond
 	cc.L.Unlock()
 	time.Sleep(time.Second)
 }
@@ -84,4 +94,10 @@ func waiter(cc *condchan.CondChan, name string, wait time.Duration, jobResult *s
 	})
 	cc.L.Unlock()
 }
+```
+
+Output:
+```text
+2019/01/27 22:48:02 Impatience: I can't wait much longer
+2019/01/27 22:48:03 Patience: I received what I been waiting for - CANDY
 ```

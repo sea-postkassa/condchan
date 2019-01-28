@@ -92,6 +92,29 @@ func TestSelectBroadcast(t *testing.T) {
 	}
 }
 
+func TestSignBroadRace(t *testing.T) {
+	cond := condchan.New(&sync.Mutex{})
+	finishChan := make(chan struct{})
+	const times = 1000000
+
+	go func() {
+		for i := 0; i < times; i++ {
+			cond.Signal()
+		}
+		finishChan <- struct{}{}
+	}()
+
+	go func() {
+		for i := 0; i < times; i++ {
+			cond.Broadcast()
+		}
+		finishChan <- struct{}{}
+	}()
+
+	<-finishChan
+	<-finishChan
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Tests below are taken from sync.Cond package ////////////////////////////////////////////////////////////////////////
 

@@ -12,8 +12,6 @@ func timeoutExample() {
 	cc := condchan.New(&sync.Mutex{})
 	timeoutChan := time.After(time.Second)
 
-	go func() {}()
-
 	cc.L.Lock()
 	// Passing func that gets channel c that signals when
 	// Signal or Broadcast is called on CondChan

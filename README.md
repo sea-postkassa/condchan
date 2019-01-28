@@ -6,7 +6,7 @@ CondChan is a [sync.Cond](https://golang.org/pkg/sync/#Cond) with the ability to
 * Implements all [sync.Cond](https://golang.org/pkg/sync/#Cond) interface
 * Passes all [sync.Cond](https://golang.org/pkg/sync/#Cond) tests
 * Implemented using channels
-* Just ~36% slower comparing to [sync.Cond](https://golang.org/pkg/sync/#Cond) 
+* Just ~37% slower comparing to [sync.Cond](https://golang.org/pkg/sync/#Cond) 
 
 [![Go Report Card](https://goreportcard.com/badge/gitlab.com/jonas.jasas/condchan)](https://goreportcard.com/report/gitlab.com/jonas.jasas/condchan)
 

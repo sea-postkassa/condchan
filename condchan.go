@@ -78,13 +78,11 @@ func (cc *CondChan) Signal() {
 	cc.checker.check()
 
 	cc.chL.RLock()
-	ch := cc.ch
-	cc.chL.RUnlock()
-
 	select {
-	case ch <- struct{}{}:
+	case cc.ch <- struct{}{}:
 	default:
 	}
+	cc.chL.RUnlock()
 }
 
 // Broadcast wakes all goroutines waiting on cc.

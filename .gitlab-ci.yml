@@ -1,17 +1,10 @@
 stages:
   - test
   
-# A hack to make Golang-in-Gitlab happy
-.anchors:
-  - &inject-gopath
-      mkdir -p $(dirname ${PACKAGE_PATH})
-      && ln -s ${CI_PROJECT_DIR} ${PACKAGE_PATH}
-      && cd ${PACKAGE_PATH}  
-  
 test:
     stage: test
     image: golang:1.11.5-alpine3.8
     before_script:
-        - *inject-gopath
+        - go get gitlab.com/jonas.jasas/condchan
     script:
-        - go test ./condchan
+        - go test gitlab.com/jonas.jasas/condchan

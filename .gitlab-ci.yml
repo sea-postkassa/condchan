@@ -10,8 +10,8 @@ stages:
   
 test:
     stage: test
-    image: golang:1.10-alpine3.7
+    image: golang:1.11.5-alpine3.8
     before_script:
         - *inject-gopath
     script:
-        - go test ./...
+        - go test ./condchan

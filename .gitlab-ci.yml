@@ -3,7 +3,7 @@ stages:
   
 test:
   stage: test
-  image: golang:1.11.5-alpine3.8
+  image: golang:
   before_script:
     - echo ${PACKAGE_PATH}
     - echo ${CI_PROJECT_DIR}

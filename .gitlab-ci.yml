@@ -1,6 +1,9 @@
 stages:
   - test
-  
+
+variables:
+  GIT_STRATEGY: none
+
 test:
   stage: test
   image: golang

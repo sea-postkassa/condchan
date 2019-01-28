@@ -8,8 +8,6 @@ test:
   stage: test
   image: golang
   before_script:
-    - echo ${PACKAGE_PATH}
-    - echo ${CI_PROJECT_DIR}
     - go get gitlab.com/jonas.jasas/condchan
   script:
     - go test gitlab.com/jonas.jasas/condchan

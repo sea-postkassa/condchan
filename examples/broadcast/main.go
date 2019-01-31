@@ -8,24 +8,8 @@ import (
 	"time"
 )
 
-func timeoutExample() {
-	cc := condchan.New(&sync.Mutex{})
-	timeoutChan := time.After(time.Second)
-
-	cc.L.Lock()
-	// Passing func that gets channel c that signals when
-	// Signal or Broadcast is called on CondChan
-	cc.Select(func(c <-chan struct{}) { // Waiting with select
-		select {
-		case <-c: // Never ending wait
-		case <-timeoutChan:
-			fmt.Println("Hooray! Just escaped from eternal wait.")
-		}
-	})
-	cc.L.Unlock()
-}
-
-func broadcastExample() {
+func main() {
+	fmt.Println("Broadcast examples")
 	cc := condchan.New(&sync.Mutex{})
 
 	var jobResult string
@@ -58,13 +42,4 @@ func waiter(cc *condchan.CondChan, name string, wait time.Duration, jobResult *s
 		}
 	})
 	cc.L.Unlock()
-}
-
-func main() {
-	fmt.Println("Timeout example")
-	timeoutExample()
-
-	fmt.Println()
-	fmt.Println("Broadcast example")
-	broadcastExample()
 }

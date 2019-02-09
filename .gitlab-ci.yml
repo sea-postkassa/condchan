@@ -11,4 +11,6 @@ test:
     - go get gitlab.com/jonas.jasas/condchan
   script:
     - go test gitlab.com/jonas.jasas/condchan
+    - echo $GOPATH
+    - echo $GOROOT
     - cd ~/go/src/gitlab.com/jonas.jasas/condchan/examples; go build --race ./...

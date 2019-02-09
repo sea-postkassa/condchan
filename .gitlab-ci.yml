@@ -10,7 +10,7 @@ test:
 #  before_script:
 #    - go get gitlab.com/jonas.jasas/condchan
   script:
-    - gitlab-runner --debug /bin/bash
+    - gitlab-runner --debug /bin/sh
 #    - go test gitlab.com/jonas.jasas/condchan
 #    - cd $GOPATH/src/gitlab.com/jonas.jasas/condchan/examples && go build --race ./...
 #    - sleep 10m

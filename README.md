@@ -9,6 +9,7 @@ CondChan is a [sync.Cond](https://golang.org/pkg/sync/#Cond) with the ability to
 * Just ~37% slower comparing to [sync.Cond](https://golang.org/pkg/sync/#Cond) 
 
 [![Go Report Card](https://goreportcard.com/badge/gitlab.com/jonas.jasas/condchan)](https://goreportcard.com/report/gitlab.com/jonas.jasas/condchan)
+[![GoDoc](https://godoc.org/gitlab.com/jonas.jasas/condchan?status.svg)](http://godoc.org/gitlab.com/jonas.jasas/condchan)
 
 ## Installation
 Simple install the package to your [$GOPATH](https://github.com/golang/go/wiki/GOPATH "GOPATH") with the [go tool](https://golang.org/cmd/go/ "go command") from shell:

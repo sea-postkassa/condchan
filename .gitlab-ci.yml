@@ -7,9 +7,10 @@ variables:
 test:
   stage: test
   image: golang
-  before_script:
-    - go get gitlab.com/jonas.jasas/condchan
+#  before_script:
+#    - go get gitlab.com/jonas.jasas/condchan
   script:
-    - go test gitlab.com/jonas.jasas/condchan
-    - cd $GOPATH/src/gitlab.com/jonas.jasas/condchan/examples && go build --race ./...
-    - sleep 10m
+    - gitlab-runner --debug /bin/bash
+#    - go test gitlab.com/jonas.jasas/condchan
+#    - cd $GOPATH/src/gitlab.com/jonas.jasas/condchan/examples && go build --race ./...
+#    - sleep 10m

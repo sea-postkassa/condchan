@@ -39,7 +39,7 @@ func New(l sync.Locker) *CondChan {
 //
 // fn is executed passing channel in to it.
 // Passed channel will signal by emitting struct{} or by closing.
-// Inside fn should be select statement using bypassed channel together with the other channels that signals execution continuation.
+// Inside fn should be select statement using passed channel together with the other channels that signals execution continuation.
 func (cc *CondChan) Select(fn selectFn) {
 	cc.checker.check()
 

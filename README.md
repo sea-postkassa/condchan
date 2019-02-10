@@ -8,10 +8,10 @@ CondChan is a [sync.Cond](https://golang.org/pkg/sync/#Cond) with the ability to
 * Implemented using channels
 * Just ~37% slower comparing to [sync.Cond](https://golang.org/pkg/sync/#Cond) 
 
-![Coverage](https://gitlab.com/jonas.jasas/condchan/badges/master/coverage.svg?job=test)
-[![Build Status](https://gitlab.com/jonas.jasas/condchan/badges/master/build.svg)](https://gitlab.com/jonas.jasas/condchan/-/jobs)
-[![Go Report Card](https://goreportcard.com/badge/gitlab.com/jonas.jasas/condchan)](https://goreportcard.com/report/gitlab.com/jonas.jasas/condchan)
-[![GoDoc](https://godoc.org/gitlab.com/jonas.jasas/condchan?status.svg)](http://godoc.org/gitlab.com/jonas.jasas/condchan)
+[![go report card](https://goreportcard.com/badge/gitlab.com/jonas.jasas/condchan)](https://goreportcard.com/report/gitlab.com/jonas.jasas/condchan)
+[![pipeline status](https://gitlab.com/jonas.jasas/condchan/badges/master/pipeline.svg)](https://gitlab.com/jonas.jasas/condchan/commits/master)
+[![coverage report](https://gitlab.com/jonas.jasas/condchan/badges/master/coverage.svg)](https://gitlab.com/jonas.jasas/condchan/commits/master)
+[![godoc](https://godoc.org/gitlab.com/jonas.jasas/condchan?status.svg)](http://godoc.org/gitlab.com/jonas.jasas/condchan)
 
 ## Installation
 Simple install the package to your [$GOPATH](https://github.com/golang/go/wiki/GOPATH "GOPATH") with the [go tool](https://golang.org/cmd/go/ "go command") from shell:

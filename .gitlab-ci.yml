@@ -20,4 +20,4 @@ build:
 test:
   stage: test
   script:
-    - go test $REPO_NAME
+    - go test $REPO_NAME -cover

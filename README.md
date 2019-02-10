@@ -13,6 +13,7 @@ CondChan is a [sync.Cond](https://golang.org/pkg/sync/#Cond) with the ability to
 [![coverage report](https://gitlab.com/jonas.jasas/condchan/badges/master/coverage.svg)](https://gitlab.com/jonas.jasas/condchan/commits/master)
 [![godoc](https://godoc.org/gitlab.com/jonas.jasas/condchan?status.svg)](http://godoc.org/gitlab.com/jonas.jasas/condchan)
 
+
 ## Installation
 Simple install the package to your [$GOPATH](https://github.com/golang/go/wiki/GOPATH "GOPATH") with the [go tool](https://golang.org/cmd/go/ "go command") from shell:
 ```bash

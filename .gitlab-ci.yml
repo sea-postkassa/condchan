@@ -5,19 +5,14 @@ variables:
   REPO_NAME: gitlab.com/jonas.jasas/condchan
 
 stages:
-  - build
   - test
 
 before_script:
   - go get $REPO_NAME
 
-build:
-  stage: build
-  script:
-    - cd $GOPATH/src/$REPO_NAME
-    - go build --race ./...
-
 test:
   stage: test
   script:
+    - cd $GOPATH/src/$REPO_NAME
+    - go build --race ./...
     - go test $REPO_NAME -cover

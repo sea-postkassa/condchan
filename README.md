@@ -1,3 +1,5 @@
+*Forked from https://gitlab.com/jonas.jasas/condchan*
+
 # CondChan cancellable [sync.Cond](https://golang.org/pkg/sync/#Cond)  
 
 CondChan is a [sync.Cond](https://golang.org/pkg/sync/#Cond) with the ability to [wait](https://golang.org/pkg/sync/#Cond.Wait) in [select](https://tour.golang.org/concurrency/5) statement. 
